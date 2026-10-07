@@ -338,7 +338,7 @@
   var FW, FH, flies = [];
   function fsize(){ FW = fc.width = window.innerWidth; FH = fc.height = window.innerHeight; }
   fsize(); window.addEventListener('resize', fsize);
-  for(var i=0;i<16;i++) flies.push({ x:Math.random(), y:Math.random(),
+  for(var i=0;i<48;i++) flies.push({ x:Math.random(), y:Math.random(),
     r:Math.random()*1.6+0.6, vx:(Math.random()-.5)*0.00016, vy:(Math.random()-.5)*0.00012,
     ph:Math.random()*6.28, sp:Math.random()*0.6+0.4 });
   var mx = window.innerWidth/2, my = window.innerHeight/2, gx = mx, gy = my;
