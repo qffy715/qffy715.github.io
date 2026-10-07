@@ -374,8 +374,8 @@
     requestAnimationFrame(floop);
   })(0);
 
-  /* 链接区点击花火 */
-  document.getElementById('links').addEventListener('pointerdown', function(e){
+  /* 全页面点击花火 */
+  document.addEventListener('pointerdown', function(e){
     var x = e.clientX, y = e.clientY;
     var fl = document.createElement('span');
     fl.className = 'fw-flash';
