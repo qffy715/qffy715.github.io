@@ -125,6 +125,16 @@
   .linkrow .arr{ color:var(--pink); font-size:20px; transition:transform .3s; }
   .linkrow:hover .arr{ transform:translateX(6px); }
 
+  /* 链接背景 */
+  .links-bg{ position:relative; overflow:hidden; }
+  .links-bg-img{ position:absolute; inset:-12% 0;
+    background:url('https://w.wallhaven.cc/full/jx/wallhaven-jx13zp.jpg') center/cover no-repeat;
+    will-change:transform; }
+  .links-veil{ position:absolute; inset:0;
+    background:linear-gradient(rgba(7,7,12,.74), rgba(7,7,12,.90)); }
+  .links-inner{ position:relative; z-index:2; max-width:1200px; margin:0 auto;
+    padding:22vh 8vw; }
+
   footer{ padding:14vh 8vw 8vh; text-align:center; }
   footer .end{ font-size:13px; letter-spacing:.55em; color:var(--faint); margin-bottom:18px; }
   footer .copy{ font-size:11px; letter-spacing:.2em; color:#3c3a45; }
@@ -198,7 +208,10 @@
   </div>
 </section>
 
-<section class="block" id="links">
+<section class="links-bg" id="links">
+  <div class="links-bg-img" data-para="0.15"></div>
+  <div class="links-veil"></div>
+  <div class="links-inner">
   <div class="label rv">03 — 链接</div>
   <h2 class="big serif rv">通往<em>别处</em>的门。</h2>
   <div class="linkrows">
@@ -210,6 +223,7 @@
       <div><div class="lt">GitHub</div><div class="ld">代码 · 白天的工作</div></div>
       <div class="arr">→</div>
     </a>
+  </div>
   </div>
 </section>
 
