@@ -158,6 +158,19 @@
     margin:-170px 0 0 -170px; border-radius:50%; pointer-events:none;
     background:radial-gradient(circle, rgba(167,139,250,.08), transparent 65%); }
 
+  /* 链接区点击花火 */
+  .fw-flash{ position:fixed; z-index:80; width:10px; height:10px; margin:-5px 0 0 -5px;
+    border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle, #fff, rgba(167,139,250,.6) 40%, transparent 70%);
+    animation:fwflash .5s ease-out forwards; }
+  @keyframes fwflash{ from{ transform:scale(1); opacity:1; } to{ transform:scale(6); opacity:0; } }
+  .fw-p{ position:fixed; z-index:80; width:5px; height:5px; margin:-2.5px 0 0 -2.5px;
+    border-radius:50%; pointer-events:none;
+    animation:fwp 1.05s cubic-bezier(.15,.6,.35,1) forwards; }
+  @keyframes fwp{ 0%{ transform:translate(0,0) scale(1); opacity:1; }
+    70%{ opacity:1; } 100%{ transform:translate(var(--dx),var(--dy)) scale(.15); opacity:0; } }
+  @media (prefers-reduced-motion: reduce){ .fw-flash,.fw-p{ display:none; } }
+
   footer{ padding:14vh 8vw 8vh; text-align:center; }
   footer .end{ font-size:13px; letter-spacing:.55em; color:var(--faint); margin-bottom:18px; }
   footer .copy{ font-size:11px; letter-spacing:.2em; color:#3c3a45; }
@@ -360,6 +373,30 @@
     glowEl.style.transform = 'translate(' + gx + 'px,' + gy + 'px)';
     requestAnimationFrame(floop);
   })(0);
+
+  /* 链接区点击花火 */
+  document.getElementById('links').addEventListener('pointerdown', function(e){
+    var x = e.clientX, y = e.clientY;
+    var fl = document.createElement('span');
+    fl.className = 'fw-flash';
+    fl.style.left = x + 'px'; fl.style.top = y + 'px';
+    document.body.appendChild(fl);
+    setTimeout(function(){ fl.remove(); }, 500);
+    var colors = ['#ea4c88','#a78bfa','#ffd9a0','#67e8f9','#f9a8d4'];
+    for(var i=0;i<26;i++){
+      var p = document.createElement('span');
+      p.className = 'fw-p';
+      var c = colors[i % colors.length];
+      p.style.background = c; p.style.boxShadow = '0 0 8px ' + c;
+      p.style.left = x + 'px'; p.style.top = y + 'px';
+      var a = (i/26)*6.283 + Math.random()*0.35;
+      var d = 60 + Math.random()*110;
+      p.style.setProperty('--dx', (Math.cos(a)*d).toFixed(1) + 'px');
+      p.style.setProperty('--dy', (Math.sin(a)*d + 45).toFixed(1) + 'px');
+      document.body.appendChild(p);
+      (function(el){ setTimeout(function(){ el.remove(); }, 1100); })(p);
+    }
+  });
 })();
 </script>
 </body>
