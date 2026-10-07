@@ -135,6 +135,29 @@
   .links-inner{ position:relative; z-index:2; max-width:1200px; margin:0 auto;
     padding:22vh 8vw; }
 
+  /* 章节指示器 */
+  .dots{ position:fixed; right:26px; top:50%; transform:translateY(-50%); z-index:60;
+    display:flex; flex-direction:column; gap:20px; }
+  .dots a{ position:relative; display:flex; align-items:center; justify-content:flex-end;
+    text-decoration:none; padding:4px 0; }
+  .dots .d{ width:7px; height:7px; border-radius:50%; background:#3a3a46; transition:all .3s; }
+  .dots .n{ position:absolute; right:22px; font-size:11px; letter-spacing:.24em; white-space:nowrap;
+    color:var(--muted); opacity:0; transform:translateX(8px); transition:all .3s; }
+  .dots a:hover .n, .dots a.on .n{ opacity:1; transform:none; }
+  .dots a.on .d{ background:var(--pink); box-shadow:0 0 12px var(--pink); transform:scale(1.4); }
+
+  /* 此刻 */
+  .nowcap{ position:fixed; left:26px; bottom:22px; z-index:60;
+    font-size:11px; letter-spacing:.26em; color:var(--faint);
+    font-family:ui-monospace,Menlo,Consolas,monospace; pointer-events:none; }
+  .nowcap b{ color:var(--muted); font-weight:400; }
+
+  /* 萤火虫与光晕 */
+  #flies{ position:fixed; inset:0; z-index:4; pointer-events:none; }
+  #glow{ position:fixed; left:0; top:0; z-index:3; width:340px; height:340px;
+    margin:-170px 0 0 -170px; border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle, rgba(167,139,250,.08), transparent 65%); }
+
   footer{ padding:14vh 8vw 8vh; text-align:center; }
   footer .end{ font-size:13px; letter-spacing:.55em; color:var(--faint); margin-bottom:18px; }
   footer .copy{ font-size:11px; letter-spacing:.2em; color:#3c3a45; }
@@ -161,6 +184,12 @@
     <a href="#links">链接</a>
   </div>
 </nav>
+
+<div class="dots">
+  <a href="#about" data-sec="about"><span class="n">01 关于</span><span class="d"></span></a>
+  <a href="#works" data-sec="works"><span class="n">02 收藏</span><span class="d"></span></a>
+  <a href="#links" data-sec="links"><span class="n">03 链接</span><span class="d"></span></a>
+</div>
 
 <header class="hero">
   <div class="hero-bg" data-para="0.12"></div>
@@ -278,7 +307,59 @@
     });
     requestAnimationFrame(loop);
   })(0);
+
+  /* 章节指示器 */
+  var dotLinks = document.querySelectorAll('.dots a');
+  var secIO = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){
+        dotLinks.forEach(function(a){ a.classList.toggle('on', a.dataset.sec === e.target.id); });
+      }
+    });
+  }, {threshold:0.3});
+  ['about','works','links'].forEach(function(id){
+    var s = document.getElementById(id); if(s) secIO.observe(s);
+  });
+
+  /* 此刻 */
+  function clock(){
+    var d = new Date(), p = function(n){ return (n<10?'0':'')+n; };
+    document.getElementById('clock').textContent = p(d.getHours())+':'+p(d.getMinutes());
+  }
+  clock(); setInterval(clock, 20000);
+
+  /* 萤火虫 + 鼠标光晕 */
+  var fc = document.getElementById('flies'), fx = fc.getContext('2d');
+  var glowEl = document.getElementById('glow');
+  var FW, FH, flies = [];
+  function fsize(){ FW = fc.width = window.innerWidth; FH = fc.height = window.innerHeight; }
+  fsize(); window.addEventListener('resize', fsize);
+  for(var i=0;i<16;i++) flies.push({ x:Math.random(), y:Math.random(),
+    r:Math.random()*1.6+0.6, vx:(Math.random()-.5)*0.00016, vy:(Math.random()-.5)*0.00012,
+    ph:Math.random()*6.28, sp:Math.random()*0.6+0.4 });
+  var mx = window.innerWidth/2, my = window.innerHeight/2, gx = mx, gy = my;
+  window.addEventListener('pointermove', function(e){ mx = e.clientX; my = e.clientY; }, {passive:true});
+  (function floop(t){
+    fx.clearRect(0,0,FW,FH);
+    for(var j=0;j<flies.length;j++){
+      var f = flies[j];
+      f.x += f.vx; f.y += f.vy;
+      if(f.x < 0) f.x = 1; if(f.x > 1) f.x = 0;
+      if(f.y < 0) f.y = 1; if(f.y > 1) f.y = 0;
+      var tw = 0.22 + 0.55*Math.abs(Math.sin(t/1000*f.sp + f.ph));
+      fx.beginPath(); fx.arc(f.x*FW, f.y*FH, f.r, 0, 6.28);
+      fx.fillStyle = 'rgba(255,220,150,' + tw.toFixed(3) + ')'; fx.fill();
+      fx.beginPath(); fx.arc(f.x*FW, f.y*FH, f.r*3.4, 0, 6.28);
+      fx.fillStyle = 'rgba(255,200,120,' + (tw*0.12).toFixed(3) + ')'; fx.fill();
+    }
+    gx += (mx-gx)*0.08; gy += (my-gy)*0.08;
+    glowEl.style.transform = 'translate(' + gx + 'px,' + gy + 'px)';
+    requestAnimationFrame(floop);
+  })(0);
 })();
 </script>
+<canvas id="flies"></canvas>
+<div id="glow"></div>
+<div class="nowcap">此刻 <b id="clock">--:--</b> · 这座城市只有我醒着</div>
 </body>
 </html>
