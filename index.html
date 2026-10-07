@@ -48,13 +48,8 @@
   /* Hero */
   .hero{ position:relative; height:100vh; min-height:640px; display:flex; align-items:flex-end;
     overflow:hidden; }
-  .hero-bg{ position:absolute; inset:-6% 0; z-index:0;
-    background:url('https://w.wallhaven.cc/full/6d/wallhaven-6d5k6x.jpg') center 30%/cover no-repeat;
-    will-change:transform; }
-  .hero-kb{ position:absolute; inset:0; z-index:0;
-    animation:herodrift 48s ease-in-out infinite alternate; will-change:transform; }
-  @keyframes herodrift{ from{ transform:scale(1); } to{ transform:scale(1.05); } }
-  #clouds{ position:absolute; inset:0; z-index:1; pointer-events:none; }
+  .hero-bg{ position:absolute; left:0; top:-6%; width:100%; height:112%; z-index:0;
+    object-fit:cover; will-change:transform; background:#07070c; }
   .hero-veil{ position:absolute; inset:0; z-index:1;
     background:linear-gradient(rgba(7,7,12,.25), rgba(7,7,12,.05) 40%, rgba(7,7,12,.88) 96%),
                radial-gradient(ellipse 80% 60% at 50% 80%, transparent 40%, rgba(7,7,12,.5)); }
@@ -173,7 +168,7 @@
     animation:fwp 1.05s cubic-bezier(.15,.6,.35,1) forwards; }
   @keyframes fwp{ 0%{ transform:translate(0,0) scale(1); opacity:1; }
     70%{ opacity:1; } 100%{ transform:translate(var(--dx),var(--dy)) scale(.15); opacity:0; } }
-  @media (prefers-reduced-motion: reduce){ .fw-flash,.fw-p{ display:none; } .hero-kb{ animation:none; } }
+  @media (prefers-reduced-motion: reduce){ .fw-flash,.fw-p{ display:none; } }
 
   footer{ padding:14vh 8vw 8vh; text-align:center; }
   footer .end{ font-size:13px; letter-spacing:.55em; color:var(--faint); margin-bottom:18px; }
@@ -209,8 +204,10 @@
 </div>
 
 <header class="hero">
-  <div class="hero-kb"><div class="hero-bg" data-para="0.12"></div></div>
-  <canvas id="clouds"></canvas>
+  <video class="hero-bg" data-para="0.12" autoplay muted loop playsinline preload="auto"
+         poster="https://w.wallhaven.cc/full/6d/wallhaven-6d5k6x.jpg">
+    <source src="hero-clouds.mp4" type="video/mp4">
+  </video>
   <div class="hero-veil"></div>
   <canvas id="dust"></canvas>
   <div class="hero-inner">
@@ -330,47 +327,6 @@
     requestAnimationFrame(loop);
   })(0);
 
-  /* 漂移的云雾 */
-  var cc = document.getElementById('clouds'), cx = cc.getContext('2d');
-  var CW = 0, CH = 0, clouds = [];
-  function csize(){
-    var r = cc.parentElement.getBoundingClientRect();
-    CW = cc.width = Math.max(1, r.width); CH = cc.height = Math.max(1, r.height);
-  }
-  csize(); window.addEventListener('resize', csize);
-  var cloudCols = ['167,139,250','234,76,136','120,140,255'];
-  for(var ci=0; ci<7; ci++) clouds.push({
-    x:Math.random()*1.5-0.25, y:0.04+Math.random()*0.52,
-    s:0.22+Math.random()*0.45, v:0.0022+Math.random()*0.0012,
-    a:0.10+Math.random()*0.12, c:cloudCols[ci%3], ph:Math.random()*6.28
-  });
-  (function cloop(t){
-    t = t || 0;
-    cx.clearRect(0,0,CW,CH);
-    var base = Math.max(CW,CH);
-    for(var j=0; j<clouds.length; j++){
-      var f = clouds[j];
-      f.x += f.v; if(f.x > 1.3) f.x = -0.3;
-      var ef = Math.min(1, (f.x+0.3)/0.25, (1.3-f.x)/0.25);
-      ef = Math.max(0, ef);
-      var ctw = 0.7 + 0.3*Math.sin(t/4500 + f.ph);
-      var al = f.a * ctw * ef;
-      if(al <= 0.004) continue;
-      var px = f.x*CW, py = f.y*CH, R = f.s*base*0.30;
-      var g = cx.createRadialGradient(px,py,0,px,py,R);
-      g.addColorStop(0, 'rgba('+f.c+','+al.toFixed(3)+')');
-      g.addColorStop(0.6, 'rgba('+f.c+','+(al*0.5).toFixed(3)+')');
-      g.addColorStop(1, 'rgba('+f.c+',0)');
-      cx.fillStyle = g;
-      cx.beginPath();
-      cx.ellipse(px, py, R, R*0.42, 0, 0, 6.29);
-      cx.ellipse(px-R*0.55, py+R*0.08, R*0.7, R*0.32, 0, 0, 6.29);
-      cx.ellipse(px+R*0.55, py+R*0.10, R*0.75, R*0.34, 0, 0, 6.29);
-      cx.fill();
-    }
-    requestAnimationFrame(cloop);
-  })();
-
   /* 章节指示器 */
   var dotLinks = document.querySelectorAll('.dots a');
   var secIO = new IntersectionObserver(function(es){
@@ -443,6 +399,11 @@
       (function(el){ setTimeout(function(){ el.remove(); }, 1100); })(p);
     }
   });
+  /* 减少动态偏好：停掉背景视频 */
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    var hv = document.querySelector('video.hero-bg');
+    if(hv){ hv.pause(); hv.removeAttribute('autoplay'); }
+  }
 })();
 </script>
 </body>
