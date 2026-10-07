@@ -48,8 +48,9 @@
   /* Hero */
   .hero{ position:relative; height:100vh; min-height:640px; display:flex; align-items:flex-end;
     overflow:hidden; }
-  .hero-bg{ position:absolute; left:0; top:-6%; width:100%; height:112%; z-index:0;
-    object-fit:cover; will-change:transform; background:#07070c; }
+  .hero-bg{ position:absolute; inset:-6% 0; z-index:0;
+    background:url('https://w.wallhaven.cc/full/6d/wallhaven-6d5k6x.jpg') center 30%/cover no-repeat;
+    will-change:transform; }
   .hero-veil{ position:absolute; inset:0; z-index:1;
     background:linear-gradient(rgba(7,7,12,.25), rgba(7,7,12,.05) 40%, rgba(7,7,12,.88) 96%),
                radial-gradient(ellipse 80% 60% at 50% 80%, transparent 40%, rgba(7,7,12,.5)); }
@@ -204,10 +205,7 @@
 </div>
 
 <header class="hero">
-  <video class="hero-bg" data-para="0.12" autoplay muted loop playsinline preload="auto"
-         poster="https://w.wallhaven.cc/full/6d/wallhaven-6d5k6x.jpg">
-    <source src="hero-clouds.mp4" type="video/mp4">
-  </video>
+  <div class="hero-bg" data-para="0.12"></div>
   <div class="hero-veil"></div>
   <canvas id="dust"></canvas>
   <div class="hero-inner">
@@ -399,11 +397,6 @@
       (function(el){ setTimeout(function(){ el.remove(); }, 1100); })(p);
     }
   });
-  /* 减少动态偏好：停掉背景视频 */
-  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-    var hv = document.querySelector('video.hero-bg');
-    if(hv){ hv.pause(); hv.removeAttribute('autoplay'); }
-  }
 })();
 </script>
 </body>
