@@ -80,19 +80,6 @@
   .prose p{ color:var(--muted); font-size:16px; line-height:2.4; letter-spacing:.05em; margin-bottom:18px; }
   .prose p b{ color:var(--txt); font-weight:500; }
 
-  /* 全幅 banner */
-  .banner{ position:relative; height:72vh; min-height:440px; overflow:hidden;
-    display:flex; align-items:center; justify-content:center; }
-  .banner-bg{ position:absolute; inset:-12% 0;
-    background:url('https://w.wallhaven.cc/full/76/wallhaven-765w3v.jpg') center/cover no-repeat;
-    will-change:transform; }
-  .banner-veil{ position:absolute; inset:0; background:rgba(7,7,12,.45); }
-  .banner blockquote{ position:relative; z-index:2; text-align:center; padding:0 8vw; }
-  .banner blockquote p{ font-size:clamp(26px,4.4vw,50px); font-weight:300; letter-spacing:.14em;
-    text-shadow:0 4px 30px rgba(0,0,0,.7); }
-  .banner blockquote cite{ display:block; margin-top:26px; font-style:normal;
-    font-size:12px; letter-spacing:.5em; color:var(--muted); }
-
   /* 作品集 */
   .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:28px; }
   .card{ position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--line);
@@ -147,7 +134,6 @@
 <nav>
   <a class="logo" href="#">wayfarer<span>.</span></a>
   <div class="links">
-    <a href="#about">关于</a>
     <a href="#works">收藏</a>
     <a href="#links">链接</a>
   </div>
@@ -164,27 +150,8 @@
   <div class="scrollhint">下 滑</div>
 </header>
 
-<section class="block" id="about">
-  <div class="label rv">01 — 关于</div>
-  <h2 class="big serif rv">一座<em>只有我</em>的城市。</h2>
-  <div class="prose">
-    <p class="rv d1"><b>wayfarer</b>，旅人。</p>
-    <p class="rv d2">白天把时间交给人群，深夜把城市还给自己。在空旷里收集霓虹，在孤寂里建造东西。</p>
-    <p class="rv d3">这里没有目的地，只有方向。霓虹熄灭之前，我还在走。</p>
-  </div>
-</section>
-
-<div class="banner">
-  <div class="banner-bg" data-para="0.18"></div>
-  <div class="banner-veil"></div>
-  <blockquote class="rv">
-    <p class="serif">世界很大，我一个人看。</p>
-    <cite>— WAYFARER</cite>
-  </blockquote>
-</div>
-
 <section class="block" id="works">
-  <div class="label rv">02 — 收藏</div>
+  <div class="label rv">01 — 收藏</div>
   <h2 class="big serif rv">深夜<em>收藏</em>。</h2>
   <div class="grid">
     <a class="card rv" href="https://wallhaven.cc/w/gpo1g3" target="_blank" rel="noopener">
@@ -211,7 +178,7 @@
 </section>
 
 <section class="block" id="links">
-  <div class="label rv">03 — 链接</div>
+  <div class="label rv">02 — 链接</div>
   <h2 class="big serif rv">通往<em>别处</em>的门。</h2>
   <div class="linkrows">
     <a class="linkrow rv" href="https://wallhaven.cc/" target="_blank" rel="noopener">
