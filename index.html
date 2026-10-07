@@ -80,6 +80,18 @@
   .prose p{ color:var(--muted); font-size:16px; line-height:2.4; letter-spacing:.05em; margin-bottom:18px; }
   .prose p b{ color:var(--txt); font-weight:500; }
 
+  /* 关于背景 */
+  .about-bg{ position:relative; overflow:hidden; }
+  .about-bg-img{ position:absolute; inset:-12% 0;
+    background:url('https://w.wallhaven.cc/full/76/wallhaven-765w3v.jpg') center/cover no-repeat;
+    will-change:transform; }
+  .about-veil{ position:absolute; inset:0;
+    background:linear-gradient(rgba(7,7,12,.60), rgba(7,7,12,.82)); }
+  .about-inner{ position:relative; z-index:2; max-width:1200px; margin:0 auto;
+    padding:24vh 8vw 12vh; min-height:64vh;
+    display:flex; flex-direction:column; justify-content:flex-end; }
+  .about-inner .label{ margin-bottom:0; }
+
   /* 作品集 */
   .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:28px; }
   .card{ position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--line);
@@ -151,8 +163,12 @@
   <div class="scrollhint">下 滑</div>
 </header>
 
-<section class="block" id="about">
-  <div class="label rv">01 — 关于</div>
+<section class="about-bg" id="about">
+  <div class="about-bg-img" data-para="0.15"></div>
+  <div class="about-veil"></div>
+  <div class="about-inner">
+    <div class="label rv">01 — 关于</div>
+  </div>
 </section>
 
 <section class="block" id="works">
