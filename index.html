@@ -60,11 +60,6 @@
   .hero h1{ font-size:clamp(64px,11vw,148px); font-weight:300; letter-spacing:.1em;
     line-height:1; text-shadow:0 4px 40px rgba(0,0,0,.6); }
   .hero h1 .w{ color:transparent; -webkit-text-stroke:1px rgba(236,234,242,.85); }
-  .type{ margin-top:26px; font-size:clamp(16px,2.2vw,22px); color:var(--muted);
-    min-height:2em; letter-spacing:.14em; }
-  .type .caret{ display:inline-block; width:2px; height:1.1em; background:var(--pink);
-    vertical-align:-2px; margin-left:4px; animation:blink 1s steps(1) infinite; }
-  @keyframes blink{ 50%{ opacity:0; } }
   .scrollhint{ position:absolute; z-index:3; bottom:34px; left:50%; transform:translateX(-50%);
     color:var(--faint); font-size:11px; letter-spacing:.4em; display:flex; flex-direction:column;
     align-items:center; gap:12px; }
@@ -165,7 +160,6 @@
   <div class="hero-inner">
     <div class="eyebrow">旅 人 · W A Y F A R E R</div>
     <h1 class="serif"><span class="w">w</span>ayfarer</h1>
-    <div class="type serif"><span id="typeText"></span><span class="caret"></span></div>
   </div>
   <div class="scrollhint">下 滑</div>
 </header>
@@ -238,25 +232,6 @@
 
 <script>
 (function(){
-  /* 打字机 */
-  var lines = ["这座城市，只有我。", "霓虹熄灭之前，我还在走。", "世界很大，我一个人看。"];
-  var el = document.getElementById('typeText');
-  var li = 0, ci = 0, del = false;
-  function tick(){
-    var line = lines[li];
-    el.textContent = line.slice(0, ci);
-    if(!del){
-      ci++;
-      if(ci > line.length){ del = true; return setTimeout(tick, 2200); }
-      setTimeout(tick, 90 + Math.random()*70);
-    }else{
-      ci--;
-      if(ci < 0){ del = false; li = (li+1)%lines.length; return setTimeout(tick, 500); }
-      setTimeout(tick, 38);
-    }
-  }
-  tick();
-
   /* 视差 */
   var paras = document.querySelectorAll('[data-para]');
   var ticking = false;
